@@ -4,7 +4,14 @@ Puppet::Type.type(:rpmkey).provide(:rpm) do
 
   def self.instances
     keys = []
-    rpm('-q','gpg-pubkey').each_line do |line|
+
+    begin
+      rpm_query = rpm('-q','gpg-pubkey')
+    rescue Puppet::ExecutionFailure
+      return []
+    end
+
+    rpm_query.each_line do |line|
       if match = /^gpg-pubkey-([0-9a-f]*)-[0-9a-f]*/.match(line)
         keys << new(:name => match.captures[0].upcase, :ensure => :present)
       else

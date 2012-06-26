@@ -21,6 +21,11 @@ describe Puppet::Type.type(:rpmkey).provider(:rpm) do
         '23A254D4'
       ]
     end
+
+    it "should return an empty list if no key is installed" do
+      described_class.expects(:rpm).with('-q', 'gpg-pubkey').raises Puppet::ExecutionFailure, 'package gpg-pubkey is not installed'
+      described_class.instances.should be_empty
+    end
   end
 
   describe "#exists?" do
