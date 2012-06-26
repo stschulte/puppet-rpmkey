@@ -6,8 +6,6 @@ describe Puppet::Type.type(:rpmkey).provider(:rpm) do
 
   before :each do
     Puppet::Type.type(:rpmkey).stubs(:defaultprovider).returns described_class
-    FileTest.stubs(:file?).with('/usr/bin/rpm').returns true
-    FileTest.stubs(:executable?).with('/usr/bin/rpm').returns true
   end
 
   describe ".instances" do
