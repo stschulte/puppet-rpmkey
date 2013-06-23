@@ -37,3 +37,9 @@ or - if you want to make sure a key is deleted - specify
     }
 
 The `name` of the `rpmkey` resource has to be the keyID of the gpg key.
+
+Running the tests
+-----------------
+
+This project requires the `puppetlabs_spec_helper` gem (available on rubygems.org)
+to run the spec tests. You can run them by executing `rake spec`.
