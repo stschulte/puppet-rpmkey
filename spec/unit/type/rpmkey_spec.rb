@@ -4,12 +4,6 @@ require 'spec_helper'
 
 describe Puppet::Type.type(:rpmkey) do
 
-  before :each do
-    @provider_class = described_class.provide(:fake) { mk_resource_methods }
-    @provider_class.stubs(:suitable?).returns true
-    described_class.stubs(:defaultprovider).returns @provider_class
-  end
-
   it "should have :name as its keyattribute" do
     described_class.key_attributes.should == [:name]
   end
