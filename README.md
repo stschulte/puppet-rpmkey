@@ -1,6 +1,8 @@
 Puppet RPMKEY Module
 ====================
 
+[![Build Status](https://travis-ci.org/stschulte/puppet-rpmkey.png?branch=master)](https://travis-ci.org/stschulte/puppet-rpmkey)
+
 This repository aims to ease the GPG keymanagement with rpm
 
 New facts
