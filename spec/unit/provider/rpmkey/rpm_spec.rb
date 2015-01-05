@@ -10,33 +10,33 @@ describe Puppet::Type.type(:rpmkey).provider(:rpm) do
 
   describe ".instances" do
     it "should have an instances method" do
-      described_class.should respond_to :instances
+      expect(described_class).to respond_to(:instances)
     end
 
     it "should get installed rpm keys by running rpm -q" do
       described_class.expects(:rpm).with('-q', 'gpg-pubkey').returns File.read(my_fixture('rpm_q'))
-      described_class.instances.map(&:name).should == [
+      expect(described_class.instances.map(&:name)).to eq([
         'DB42A60E',
         '4F2A6FD2',
         '23A254D4'
-      ]
+      ])
     end
 
     it "should return an empty list if no key is installed" do
       described_class.expects(:rpm).with('-q', 'gpg-pubkey').raises Puppet::ExecutionFailure, 'package gpg-pubkey is not installed'
-      described_class.instances.should be_empty
+      expect(described_class.instances).to be_empty
     end
   end
 
   describe "#exists?" do
     it "should return true if the resource is present" do
       provider = described_class.new(:name => 'DB42A60E', :ensure => :present)
-      provider.should be_exists
+      expect(provider).to be_exists
     end
 
     it "should return false if the resource is absent" do
       provider = described_class.new(:name => 'DB42A60E', :ensure => :absent)
-      provider.should_not be_exists
+      expect(provider).not_to be_exists
     end
   end
 
