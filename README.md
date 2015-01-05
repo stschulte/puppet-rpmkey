@@ -39,6 +39,13 @@ or - if you want to make sure a key is deleted - specify
     }
 
 The `name` of the `rpmkey` resource has to be the keyID of the gpg key.
+The keyID can be found via gpg by passing it the path to an existing key.
+For example, to find the keyID used by EPEL 7:
+
+    $ gpg ./RPM-GPG-KEY-EPEL-7
+    pub  4096R/352C64E5 2013-12-16 Fedora EPEL (7) <epel@fedoraproject.org>
+
+The string after the / is what `rpmkey` expects (`352C64E5`).
 
 Running the tests
 -----------------
