@@ -52,3 +52,10 @@ Running the tests
 
 This project requires the `puppetlabs_spec_helper` gem (available on rubygems.org)
 to run the spec tests. You can run them by executing `rake spec`.
+
+Contribution
+------------
+
+Thanks to the following contributer, who made this module more usable:
+
+* Gene Liverman
