@@ -18,10 +18,16 @@ env:
 matrix:
   exclude:
     - rvm: 1.9.3
-      env: PUPPET_VERSION="~> 2.7.0"
+      env: PUPPET_VERSION="~> 2.7.0" FACTER_VERSION="~> 1.6.0"
+    - rvm: 1.9.3
+      env: PUPPET_VERSION="~> 2.7.0" FACTER_VERSION="~> 1.7.0"
     - rvm: 2.0.0
-      env: PUPPET_VERSION="~> 2.7.0"
+      env: PUPPET_VERSION="~> 2.7.0" FACTER_VERSION="~> 1.6.0"
+    - rvm: 2.0.0
+      env: PUPPET_VERSION="~> 2.7.0" FACTER_VERSION="~> 1.7.0"
     - rvm: 2.1.5
-      env: PUPPET_VERSION="~> 2.7.0"
+      env: PUPPET_VERSION="~> 2.7.0" FACTER_VERSION="~> 1.6.0"
+    - rvm: 2.1.5
+      env: PUPPET_VERSION="~> 2.7.0" FACTER_VERSION="~> 1.7.0"
 notifications:
   email: false
