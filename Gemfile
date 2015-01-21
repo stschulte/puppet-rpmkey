@@ -1,20 +1,8 @@
 source 'https://rubygems.org'
 
-group :development, :test do
-  gem 'rake', :require => false
-  gem 'rspec-puppet', :require => false
-  gem 'puppetlabs_spec_helper', :require => false
-  gem 'puppet-lint', :require => false
-end
+puppetversion = ENV.key?('PUPPET_VERSION') ? "= #{ENV['PUPPET_VERSION']}" : ['>= 2.7']
+facterversion = ENV.key?('FACTER_VERSION') ? "= #{ENV['FACTER_VERSION']}" : ['>= 1.6']
 
-if facterversion = ENV['FACTER_GEM_VERSION']
-  gem 'facter', facterversion, :require => false
-else
-  gem 'facter', :require => false
-end
-
-if puppetversion = ENV['PUPPET_GEM_VERSION']
-  gem 'puppet', puppetversion, :require => false
-else
-  gem 'puppet', :require => false
-end
+gem 'puppet', puppetversion
+gem 'puppetlabs_spec_helper', '>= 0.1.0'
+gem 'facter', facterversion

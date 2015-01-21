@@ -1,0 +1,11 @@
+{
+  "name": "stschulte-rpmkey",
+  "version": "1.0.0",
+  "author": "stschulte",
+  "summary": "Manage your RPM keyring through puppet",
+  "license": "Apache 2.0",
+  "source": "https://github.com/stschulte/puppet-rpmkey.git",
+  "project_page": "https://github.com/stschulte/puppet-rpmkey",
+  "issues_url": "https://github.com/stschulte/puppet-rpmkey/issues",
+  "dependencies": [ ]
+}
