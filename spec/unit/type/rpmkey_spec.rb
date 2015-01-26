@@ -71,5 +71,23 @@ describe Puppet::Type.type(:rpmkey) do
       end
     end
 
+    describe "autorequire" do
+      let(:catalog){
+        catalog = Puppet::Resource::Catalog.new
+      }
+      it "should autorequire a local file" do
+        file = Puppet::Type.type(:file).new(:name => '/tmp/foo', :content => 'bar' )
+        catalog.add_resource file
+        key = described_class.new(:name => 'DB42A60E', :source => '/tmp/foo', :ensure => :present)
+        catalog.add_resource key
+        expect(key.autorequire.size).to eq(1)
+      end
+      it "should not fail on an absent source" do
+         key = described_class.new(:name => 'DB42A60E', :ensure => :absent)
+         expect { catalog.add_resource key }.to_not raise_error
+         expect(key.autorequire.size).to eq(0)
+      end
+    end
+
   end
 end

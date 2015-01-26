@@ -23,4 +23,8 @@ Puppet::Type.newtype(:rpmkey) do
     desc "The source of the public key if the key is not already imported."
   end
 
+  autorequire(:file) do
+    self[:source] if self[:source] =~ /^\//
+  end
+
 end
