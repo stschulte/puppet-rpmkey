@@ -56,6 +56,7 @@ to run the spec tests. You can run them by executing `rake spec`.
 Contribution
 ------------
 
-Thanks to the following contributer, who made this module more usable:
+Thanks to the following contributers, who made this module more usable:
 
 * Gene Liverman
+* Michael Moll
