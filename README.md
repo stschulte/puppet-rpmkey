@@ -60,3 +60,4 @@ Thanks to the following contributers, who made this module more usable:
 
 * Gene Liverman
 * Michael Moll
+* duritong
