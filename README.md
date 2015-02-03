@@ -7,53 +7,63 @@ Puppet RPMKEY Module
 
 This repository aims to ease the GPG keymanagement with rpm
 
-New facts
----------
-(currently none)
+Background
+----------
 
-New functions
--------------
-(currently none)
+A package maintainer can sign his RPM packages with a secret gpg key.  This
+allows a third party (e.g. you) to verify the package with the corresponding
+public key. The `rpm` utility has its own keyring and commands to import and
+remove public gpg keys.
 
-New custom types
-----------------
+A key can be imported with `rpm --import` and will then present itself as an
+installed package of the form `gpgkey-#{keyid}-#{signature_date}`. In the same
+way the key can be removed from the keyring by removing the corresponding
+package with `rpm --erase`
 
-### rpmkey
+The puppet way
+--------------
 
-A package maintainer can sign his RPM packages with a gpg key. The signed RPM package can later be
-verified by the rpm utility if the corresponding public key of the package maintainer is present.
-RPM has its own keyring and commands to import and remove keys.
+The new puppet `rpmkey` type treats a single key as a puppet resource so you
+can e.g. specify
 
-A key can be imported with `rpm --import` and will then present itself as an installed package of the form
-`gpgkey-#{keyid}-#{signature_date}`. A key can be removed by removing the package with `rpm -e`.
+```puppet
+rpmkey { '0608B895':
+  ensure => present,
+  source => 'https://fedoraproject.org/static/0608B895.txt',
+}
+```
 
-The new puppet `rpmkey` type treats a single key as resource so you can e.g. specify
+The above resource will import the key if it is not already present. If
+you want to make sure that a key is absent (remove it when it is present)
+specify the following instead:
 
-    rpmkey { '0608B895':
-      ensure => present,
-      source => 'https://fedoraproject.org/static/0608B895.txt',
-    }
+```puppet
+rpmkey { '0608B895':
+  ensure => absent,
+}
+```
 
-or - if you want to make sure a key is deleted - specify
+The `name` of the `rpmkey` resource has to be the keyID of the gpg key.  If
+you have the public key available as a file but you are unsure of the correct
+keyID, use `gpg` to extract the keyID.  For example, to find the keyID used
+by EPEL 7:
 
-    rpmkey { '0608B895':
-      ensure => absent,
-    }
-
-The `name` of the `rpmkey` resource has to be the keyID of the gpg key.
-The keyID can be found via gpg by passing it the path to an existing key.
-For example, to find the keyID used by EPEL 7:
-
-    $ gpg ./RPM-GPG-KEY-EPEL-7
-    pub  4096R/352C64E5 2013-12-16 Fedora EPEL (7) <epel@fedoraproject.org>
+```bash
+$ gpg ./RPM-GPG-KEY-EPEL-7
+pub  4096R/352C64E5 2013-12-16 Fedora EPEL (7) <epel@fedoraproject.org>
+```
 
 The string after the / is what `rpmkey` expects (`352C64E5`).
 
 Running the tests
 -----------------
 
-This project requires the `puppetlabs_spec_helper` gem (available on rubygems.org)
-to run the spec tests. You can run them by executing `rake spec`.
+The easiest way to run the tests is via bundler
+
+```bash
+bundle install
+bundle exec rake spec SPEC_OPTS='--format documentation'
+```
 
 Contribution
 ------------
