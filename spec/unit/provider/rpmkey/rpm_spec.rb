@@ -26,6 +26,16 @@ describe Puppet::Type.type(:rpmkey).provider(:rpm) do
       described_class.expects(:rpm).with('-q', 'gpg-pubkey').raises Puppet::ExecutionFailure, 'package gpg-pubkey is not installed'
       expect(described_class.instances).to be_empty
     end
+
+    it "should warn and ignore unexpected output" do
+      described_class.expects(:rpm).with('-q', 'gpg-pubkey').returns File.read(my_fixture('rpm_q_unexpected'))
+      described_class.expects(:warning).with('Unexpected rpm output "gpg-pubkey-4f2a6fd3". Ignoring this line.')
+      expect(described_class.instances.map(&:name)).to eq([
+        'DB42A60E',
+        '4F2A6FD2',
+        '23A254D4'
+      ])
+    end
   end
 
   describe "#exists?" do

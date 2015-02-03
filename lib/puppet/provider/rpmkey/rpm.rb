@@ -12,10 +12,11 @@ Puppet::Type.type(:rpmkey).provide(:rpm) do
     end
 
     rpm_query.each_line do |line|
+      line.chomp!
       if match = /^gpg-pubkey-([0-9a-f]*)-[0-9a-f]*/.match(line)
         keys << new(:name => match.captures[0].upcase, :ensure => :present)
       else
-        warning "Unexpected rpm output #{line.expect}. Ignoring this line."
+        warning "Unexpected rpm output #{line.inspect}. Ignoring this line."
       end
     end
     keys
