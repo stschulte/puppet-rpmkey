@@ -12,7 +12,6 @@ unless RUBY_VERSION =~ /^1.8/
     SimpleCov::Formatter::HTMLFormatter,
     Coveralls::SimpleCov::Formatter
   ]
-  SimpleCov.start
   SimpleCov.start do
     add_filter 'spec/'
   end
