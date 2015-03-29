@@ -74,6 +74,10 @@ describe Puppet::Type.type(:rpmkey) do
       it "should support a http url" do
         expect(described_class.new(:name => 'DB42A60E', :source => 'http://example.com/some key', :ensure => :present)[:source]).to eq('http://example.com/some key')
       end
+
+      it "should support a puppet url" do
+        expect(described_class.new(:name => 'DB42A60E', :source => 'puppet:///modules/rpmkey/some key', :ensure => :present)[:source]).to eq('puppet:///modules/rpmkey/some key')
+      end
     end
 
     describe "autorequire" do

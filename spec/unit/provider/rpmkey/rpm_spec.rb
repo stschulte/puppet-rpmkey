@@ -71,6 +71,9 @@ describe Puppet::Type.type(:rpmkey).provider(:rpm) do
       provider.create
     end
 
+    it "should import a puppet link by retrieving the file first" do
+    end
+
     it "should raise an error if no source is specified" do
       provider = described_class.new(Puppet::Type.type(:rpmkey).new(
         :name   => 'DB42A60E',
