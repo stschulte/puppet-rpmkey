@@ -1,11 +1,21 @@
 Puppet::Type.newtype(:rpmkey) do
 
   @doc = "Define public GPG keys that should be part of the rpm
-    keyring."
+    keyring.
+
+    **Autorequires:** If puppet is managing the keyfile as a `file` resource,
+    the `rpmkey` resource will autorequire that file"
 
   newparam(:name) do
-    desc "The name of the key. This is the keyID (in hex) in
-      uppercase."
+    desc "The `name` of the `rpmkey` resource has to be the keyID (in hex)
+      of the gpg key in uppercase.  If you have the public key available as a
+      file but you are unsure of the correct keyID, use `gpg` to extract the
+      keyID.  For example, to find the keyID used by EPEL 7:
+
+          $ gpg ./RPM-GPG-KEY-EPEL-7
+          pub  4096R/352C64E5 2013-12-16 Fedora EPEL (7) <epel@fedoraproject.org>
+
+      in this case, `352C64E5` would be the correct name."
 
     isnamevar
 
