@@ -64,10 +64,15 @@ describe Puppet::Type.type(:rpmkey) do
 
     describe "for source" do
       it "should support a local filename" do
-        expect { described_class.new(:name => 'DB42A60E', :source => '/tmp/foo', :ensure => :present) }.to_not raise_error
+        expect(described_class.new(:name => 'DB42A60E', :source => '/etc/pki/some key', :ensure => :present)[:source]).to eq('file:/etc/pki/some key')
       end
-      it "should support a http link" do
-        expect { described_class.new(:name => 'DB42A60E', :source => 'http://example.com/foo', :ensure => :present) }.to_not raise_error
+
+      it "should support a file url" do
+        expect(described_class.new(:name => 'DB42A60E', :source => 'file:/tmp/some key', :ensure => :present)[:source]).to eq('file:/tmp/some key')
+      end
+
+      it "should support a http url" do
+        expect(described_class.new(:name => 'DB42A60E', :source => 'http://example.com/some key', :ensure => :present)[:source]).to eq('http://example.com/some key')
       end
     end
 
@@ -76,9 +81,9 @@ describe Puppet::Type.type(:rpmkey) do
         catalog = Puppet::Resource::Catalog.new
       }
       it "should autorequire a local file" do
-        file = Puppet::Type.type(:file).new(:name => '/tmp/foo', :content => 'bar' )
+        file = Puppet::Type.type(:file).new(:name => '/tmp/some key', :content => 'bar' )
         catalog.add_resource file
-        key = described_class.new(:name => 'DB42A60E', :source => '/tmp/foo', :ensure => :present)
+        key = described_class.new(:name => 'DB42A60E', :source => '/tmp/some key', :ensure => :present)
         catalog.add_resource key
         expect(key.autorequire.size).to eq(1)
       end

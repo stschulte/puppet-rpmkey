@@ -51,7 +51,17 @@ describe Puppet::Type.type(:rpmkey).provider(:rpm) do
   end
 
   describe "#create" do
-    it "should import the key" do
+    it "should import a local file by filename" do
+      provider = described_class.new(Puppet::Type.type(:rpmkey).new(
+        :name   => 'DB42A60E',
+        :source => '/etc/pki/some key',
+        :ensure => :present
+      ))
+      provider.expects(:rpm).with('--import', '/etc/pki/some key')
+      provider.create
+    end
+
+    it "should import a http link by url" do
       provider = described_class.new(Puppet::Type.type(:rpmkey).new(
         :name   => 'DB42A60E',
         :source => 'http://example.com/foo',

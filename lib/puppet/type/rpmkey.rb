@@ -1,3 +1,5 @@
+require 'uri'
+
 Puppet::Type.newtype(:rpmkey) do
 
   @doc = "Define public GPG keys that should be part of the rpm
@@ -30,11 +32,42 @@ Puppet::Type.newtype(:rpmkey) do
   ensurable
 
   newparam(:source) do
-    desc "The source of the public key if the key is not already imported."
+    desc "The source of the public key. This can be a local file or
+        any URL that `rpm` supports (e.g. `http`). You can also specify
+        a `puppet://` URL in which case the keyfile will be downloaded
+        from the puppet master prior to importing it."
+
+    validate do |source|
+      # the value must be either a filename or a valid URL
+      unless Puppet::Util.absolute_path?(source)
+        begin
+          uri = URI.parse(URI.escape(source))
+        rescue => detail
+          raise Puppet::Error, "Could not understand source #{source}: #{detail}"
+        end
+
+        raise Puppet::Error, "Cannot use relative URLs '#{source}'" unless uri.absolute?
+        raise Puppet::Error, "Cannot use opaque URLs '#{source}'" unless uri.hierarchical?
+      end
+    end
+
+    SEPARATOR_REGEX = [Regexp.escape(File::SEPARATOR.to_s), Regexp.escape(File::ALT_SEPARATOR.to_s)].join
+
+    # make sure we always pass a valid URI to the provider
+    munge do |source|
+      source = source.sub(/[#{SEPARATOR_REGEX}]+$/, '')
+      if Puppet::Util.absolute_path?(source)
+        URI.unescape(Puppet::Util.path_to_uri(source).to_s)
+      else
+        source
+      end
+    end
   end
 
   autorequire(:file) do
-    self[:source] if self[:source] =~ /^\//
+    if source = self[:source] and uri = URI.parse(URI.escape(source)) and uri.scheme == 'file'
+      uri_to_path(uri)
+    end
   end
 
 end

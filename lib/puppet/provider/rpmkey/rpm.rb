@@ -30,9 +30,22 @@ Puppet::Type.type(:rpmkey).provide(:rpm) do
     end
   end
 
+  def path(source)
+    uri = URI.parse(URI.escape(source))
+    case uri.scheme
+    when 'file'
+      # no need to download a local file. Just use the filename
+      uri_to_path(uri)
+    else
+      # we don't know how to handle other types (e.g. http or https)
+      # so we trust rpm how to handle these
+      source
+    end
+  end
+
   def create
     raise Puppet::Error, "Cannot add key without a source" unless @resource[:source]
-    rpm('--import', @resource[:source])
+    rpm '--import', path(@resource[:source])
   end
 
   def exists?
