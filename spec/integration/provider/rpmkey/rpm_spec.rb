@@ -9,14 +9,6 @@ describe Puppet::Type.type(:rpmkey).provider(:rpm), '(integration)' do
 #    Puppet::Type.type(:rpmkey).stubs(:defaultprovider).returns described_class
   end
 
-  let :rpm_q_output do
-    <<EOS
-gpg-pubkey-db42a60e-37ea5438
-gpg-pubkey-4f2a6fd2-3f9d9d3b
-gpg-pubkey-23a254d4-41ddbc46
-EOS
-  end
-
   # this resource is already absent
   let :resource_absent do
     Puppet::Type.type(:rpmkey).new(
@@ -28,9 +20,9 @@ EOS
   # this resource is already present
   let :resource_present do
     Puppet::Type.type(:rpmkey).new(
-      :name   => '4F2A6FD2',
+      :name   => '8E1431D5',
       :ensure => :present,
-      :source => '/tmp/4F2A6FD2'
+      :source => '/tmp/8E1431D5'
     )
   end
 
@@ -46,7 +38,7 @@ EOS
   # this resource is not yet absent
   let :resource_delete do
     Puppet::Type.type(:rpmkey).new(
-      :name   => '23A254D4',
+      :name   => '8E1431D5',
       :ensure => :absent
     )
   end
@@ -58,7 +50,8 @@ EOS
       resource.expects(:err).never
       catalog.add_resource(resource)
     end
-    described_class.expects(:rpm).with('-q', 'gpg-pubkey').returns rpm_q_output
+    described_class.expects(:rpm).with('-q', 'gpg-pubkey', '--xml').
+      returns File.read(fixtures('unit/provider/rpmkey/rpm/rpm_q_xml'))
     catalog.apply
   end
 
@@ -70,7 +63,7 @@ EOS
       end
 
       it "should erase corresponsing package if key currently present" do
-        described_class.any_instance.expects(:rpm).with('-e', '--allmatches', 'gpg-pubkey-23a254d4')
+        described_class.any_instance.expects(:rpm).with('-e', '--allmatches', 'gpg-pubkey-8e1431d5-53bcbac7')
         run_in_catalog(resource_delete)
       end
     end

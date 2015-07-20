@@ -20,6 +20,17 @@ describe Puppet::Type.type(:rpmkey) do
         expect(described_class.attrtype(property)).to eq(:property)
       end
     end
+
+    [
+      :install_date,
+      :build_date,
+      :packager,
+      :package,
+    ].each do |property|
+      it "should have a #{property} property" do
+        expect(described_class.attrtype(property)).to eq(:property)
+      end
+    end
   end
 
   describe "when validating value" do
@@ -68,6 +79,20 @@ describe Puppet::Type.type(:rpmkey) do
       end
       it "should support a http link" do
         expect { described_class.new(:name => 'DB42A60E', :source => 'http://example.com/foo', :ensure => :present) }.to_not raise_error
+      end
+    end
+
+    [
+      :install_date,
+      :build_date,
+      :packager,
+      :package,
+    ].each do |property|
+      describe "for #{property}" do
+        it "should be read only" do
+          expect { described_class.new(:name => 'DB42A60E', property => '1') }.
+            to raise_error(Puppet::Error, /#{property} is read-only/)
+        end
       end
     end
 
