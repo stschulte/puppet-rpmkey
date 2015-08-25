@@ -22,7 +22,7 @@ package with `rpm --erase`
 
 Dependencies
 ------------
-* stblib
+* stdlib
 
 The puppet way
 --------------
@@ -68,7 +68,8 @@ The string after the / is what `rpmkey` expects (`352C64E5`).
 Using the module with hiera
 ---------------------------
 
-```classes:
+```
+classes:
   - 'rpmkey'
 
 rpmkey::rpmkeys:
