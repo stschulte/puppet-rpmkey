@@ -16,10 +16,9 @@ class rpmkey (
   validate_bool($rpmkeys_hiera_merge_real)
 
   if $rpmkeys_hiera_merge_real == true {
-    $rpmkeys_real = hiera_hash('rpmkeys::rpmkeys')
+    $rpmkeys_real = hiera_hash('rpmkey::rpmkeys')
   } else {
     $rpmkeys_real = $rpmkeys
   }
-  # Check for hiera merge true / false
-  create_resources('rpmkey::rpmkey', $rpmkeys_real)
+  create_resources(rpmkey, $rpmkeys_real, { ensure => present })
 }
