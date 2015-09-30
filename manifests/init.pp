@@ -20,5 +20,7 @@ class rpmkey (
   } else {
     $rpmkeys_real = $rpmkeys
   }
-  create_resources(rpmkey, $rpmkeys_real, { ensure => present })
+  if $rpmkeys_real {
+    create_resources(rpmkey, $rpmkeys_real, { ensure => present })
+  }
 }

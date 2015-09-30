@@ -2,11 +2,7 @@ require 'spec_helper'
 
 describe 'rpmkey', :type => :class do
   context 'with defaults for all parameters' do
-    it 'should fail' do
-    expect {
-      should contain_class('rpmkey')
-    }.to raise_error(Puppet::Error,/.*second argument must be a hash.*/)
-    end
+    it { should contain_class('rpmkey') }
   end
   context 'with key specified in hiera and hiera_merge disabled' do
     let(:facts) do
