@@ -1,40 +1,68 @@
 require 'spec_helper'
 
-describe 'rpmkey' do
-
-  context 'with a key specified as present' do
-    let(:params) do
+describe 'rpmkey', :type => :class do
+  context 'with defaults for all parameters' do
+    it 'should fail' do
+    expect {
+      should contain_class('rpmkey')
+    }.to raise_error(Puppet::Error,/.*second argument must be a hash.*/)
+    end
+  end
+  context 'with key specified in hiera and hiera_merge disabled' do
+    let(:facts) do
       {
-        :rpmkeys => {
-          '0608B895' => {
-            'ensure' => 'present',
-            'source' => 'https://fedoraproject.org/static/0608B895.txt',
-          }
-        }
+        :osfamily => 'RedHat',
+        :fqdn => 'hieranomerge.example.com',
+        :lsbmajdistversion => '6',
       }
     end
-    it {should contain_rpmkey('0608B895').with({
+    it { should contain_class('rpmkey') }
+    it { should contain_rpmkey('0608B895').with({
       'ensure' => 'present',
       'source' => 'https://fedoraproject.org/static/0608B895.txt',
-      })
+    })
     }
   end
-
-  context 'with key specified as absent' do
-    let(:params) do
+  context 'with multiple key specified in hiera with hiera_merge disabled' do
+    let(:facts) do
       {
-        :rpmkeys => {
-          '0608B895' => {
-            'ensure' => 'absent',
-            'source' => 'https://fedoraproject.org/static/0608B895.txt',
-          }
-        }
+        :osfamily => 'RedHat',
+        :fqdn => 'hieranomerge.example.com',
+        :lsbmajdistversion => '6',
+        :specific => 'redhatkeys',
       }
     end
-    it {should contain_rpmkey('0608B895').with({
-      'ensure' => 'absent',
+    it { should contain_class('rpmkey') }
+    it { should contain_rpmkey('0608B895').with({
+      'ensure' => 'present',
       'source' => 'https://fedoraproject.org/static/0608B895.txt',
-      })
+    })
+    }
+    it { should_not contain_rpmkey('12345678').with({
+      'ensure' => 'absent',
+      'source' => 'https://link-to-key.tld/static/12345678.txt',
+    })
+    }
+  end
+  context 'with multiple key specified in hiera with hiera_merge enabled' do
+    let(:facts) do
+      {
+        :osfamily => 'RedHat',
+        :fqdn => 'hieramerge.example.com',
+        :lsbmajdistversion => '6',
+        :specific => 'redhatkeys',
+      }
+    end
+    it { should contain_class('rpmkey') }
+    it { should contain_rpmkey('0608B895').with({
+      'ensure' => 'present',
+      'source' => 'https://fedoraproject.org/static/0608B895.txt',
+    })
+    }
+    it { should contain_rpmkey('12345678').with({
+      'ensure' => 'absent',
+      'source' => 'https://link-to-key.tld/static/12345678.txt',
+    })
     }
   end
 end

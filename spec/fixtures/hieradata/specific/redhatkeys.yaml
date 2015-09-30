@@ -1,0 +1,4 @@
+rpmkey::rpmkeys:
+  '12345678':
+    ensure: 'absent'
+    source: 'https://link-to-key.tld/static/12345678.txt'
