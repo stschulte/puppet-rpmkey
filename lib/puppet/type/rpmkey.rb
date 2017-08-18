@@ -23,6 +23,19 @@ Puppet::Type.newtype(:rpmkey) do
     desc "The source of the public key if the key is not already imported."
   end
 
+  [
+    :install_date,
+    :build_date,
+    :packager,
+    :package,
+  ].each do |prop|
+    newproperty(prop) do
+      validate do |value|
+        raise Puppet::Error, "#{prop} is read-only"
+      end
+    end
+  end
+
   autorequire(:file) do
     self[:source] if self[:source] =~ /^\//
   end
