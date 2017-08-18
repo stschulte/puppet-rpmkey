@@ -20,6 +20,10 @@ installed package of the form `gpgkey-#{keyid}-#{signature_date}`. In the same
 way the key can be removed from the keyring by removing the corresponding
 package with `rpm --erase`
 
+Dependencies
+------------
+* stdlib
+
 The puppet way
 --------------
 
@@ -33,9 +37,14 @@ rpmkey { '0608B895':
 }
 ```
 
-The above resource will import the key if it is not already present. If
-you want to make sure that a key is absent (remove it when it is present)
-specify the following instead:
+The above resource will import the key if it is not already present. You can
+use any argument as a `source` parameter that `rpm` supports (e.g. a path
+to a local file or a http link). You can also use a `puppet://` source in
+which case the gpg key will be downloaded form your puppet master and
+stored in a temporary file before importing it.
+
+If you want to make sure that a key is absent (remove the key in case it is
+present) specify the following instead:
 
 ```puppet
 rpmkey { '0608B895':
@@ -54,6 +63,24 @@ pub  4096R/352C64E5 2013-12-16 Fedora EPEL (7) <epel@fedoraproject.org>
 ```
 
 The string after the / is what `rpmkey` expects (`352C64E5`).
+
+
+Using the module with hiera
+---------------------------
+
+```
+classes:
+  - 'rpmkey'
+
+rpmkey::rpmkeys:
+  '0608B896':
+    ensure: present
+    source: 'puppet:///files/file/RPMKEYS/0608B896.txt'
+  '0608B895':
+    ensure: present
+    source: 'https://fedoraproject.org/static/0608B895.txt'
+```
+
 
 Running the tests
 -----------------
