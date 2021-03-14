@@ -9,6 +9,13 @@ require 'rspec-puppet-facts'
 
 require 'spec_helper_local' if File.file?(File.join(File.dirname(__FILE__), 'spec_helper_local.rb'))
 
+require 'simplecov'
+require 'coveralls'
+Coveralls.wear!
+SimpleCov.start do
+  add_filter '/spec/'
+end
+
 include RspecPuppetFacts
 
 default_facts = {
