@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 Puppet::Type.type(:rpmkey).provide(:rpm) do
   commands rpm: 'rpm'
 
