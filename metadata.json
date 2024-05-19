@@ -43,11 +43,8 @@
       "version_requirement": ">= 6.21.0 < 8.0.0"
     }
   ],
-  "tags": [
-    "rpm",
-    "gpg"
-  ],
-  "pdk-version": "2.0.0",
-  "template-url": "https://github.com/puppetlabs/pdk-templates#2.0.0",
-  "template-ref": "tags/2.0.0-0-ge838f1d"
+  "tags": ["rpm", "gpg"],
+  "pdk-version": "3.1.0",
+  "template-url": "https://github.com/puppetlabs/pdk-templates#3.1.0",
+  "template-ref": "tags/3.0.1.3-0-gfbf353c"
 }
