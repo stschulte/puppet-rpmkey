@@ -1,0 +1,39 @@
+name: "Publish Module"
+
+on:
+  workflow_dispatch:
+
+env:
+  FORGE_API_KEY: ${{ secrets.FORGE_API_KEY }}
+
+jobs:
+  release:
+    name: Release Module
+    runs-on: "ubuntu-latest"
+
+    steps:
+      - name: "Checkout"
+        uses: "actions/checkout@v4"
+        with:
+          ref: "${{ github.ref }}"
+          clean: true
+          fetch-depth: 0
+          fetch-tags: true
+
+      - name: "Get metadata"
+        id: metadata
+        run: |
+          metadata_version=$(jq --raw-output .version metadata.json)
+          tag="v${metadata_version}"
+          echo "tag=${tag}" >> $GITHUB_OUTPUT
+          echo "version=${metadata_version}" >> $GITHUB_OUTPUT
+
+      - name: "PDK build ${{ steps.metadata.outputs.version }}"
+        uses: "docker://puppet/pdk:3.0.0.0"
+        with:
+          args: "build"
+
+      - name: "Publish module"
+        uses: "docker://puppet/pdk:3.0.0.0"
+        with:
+          args: "release publish --forge-token ${{ env.FORGE_API_KEY }} --force"
