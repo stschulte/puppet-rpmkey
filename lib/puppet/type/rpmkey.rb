@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 Puppet::Type.newtype(:rpmkey) do
   @doc = "Define public GPG keys that should be part of the rpm
     keyring."
