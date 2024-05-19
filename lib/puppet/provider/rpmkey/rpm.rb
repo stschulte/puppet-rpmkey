@@ -1,6 +1,13 @@
 # frozen_string_literal: true
 
 Puppet::Type.type(:rpmkey).provide(:rpm) do
+  desc <<-EOT
+    Uses the default rpm binary to install new
+    keys to RPMs keyring via rpm --import. Keys
+    are removed from the keyring by deinstalling
+    the respective gpg-pubkey package
+  EOT
+
   commands rpm: 'rpm'
 
   def self.instances
