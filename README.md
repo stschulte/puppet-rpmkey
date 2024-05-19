@@ -1,16 +1,14 @@
-Puppet RPMKEY Module
-====================
+# Puppet RPMKEY Module
 
-[![Build Status](https://travis-ci.org/stschulte/puppet-rpmkey.png?branch=master)](https://travis-ci.org/stschulte/puppet-rpmkey)
+[![Build Status](https://github.com/stschulte/puppet-rpmkey/actions/workflows/main.yml/badge.svg)](https://github.com/stschulte/puppet-rpmkey/actions/workflows/main.yml)
 [![Coverage Status](https://coveralls.io/repos/stschulte/puppet-rpmkey/badge.svg)](https://coveralls.io/r/stschulte/puppet-rpmkey)
 [![Puppet Forge](https://img.shields.io/puppetforge/v/stschulte/rpmkey.svg)](https://forge.puppetlabs.com/stschulte/rpmkey)
 
 This repository aims to ease the GPG keymanagement with rpm
 
-Background
-----------
+## Background
 
-A package maintainer can sign his RPM packages with a secret gpg key.  This
+A package maintainer can sign his RPM packages with a secret gpg key. This
 allows a third party (e.g. you) to verify the package with the corresponding
 public key. The `rpm` utility has its own keyring and commands to import and
 remove public gpg keys.
@@ -20,8 +18,7 @@ installed package of the form `gpgkey-#{keyid}-#{signature_date}`. In the same
 way the key can be removed from the keyring by removing the corresponding
 package with `rpm --erase`
 
-The puppet way
---------------
+## The puppet way
 
 The new puppet `rpmkey` type treats a single key as a puppet resource so you
 can e.g. specify
@@ -43,9 +40,9 @@ rpmkey { '0608B895':
 }
 ```
 
-The `name` of the `rpmkey` resource has to be the keyID of the gpg key.  If
+The `name` of the `rpmkey` resource has to be the keyID of the gpg key. If
 you have the public key available as a file but you are unsure of the correct
-keyID, use `gpg` to extract the keyID.  For example, to find the keyID used
+keyID, use `gpg` to extract the keyID. For example, to find the keyID used
 by EPEL 7:
 
 ```bash
@@ -55,8 +52,7 @@ pub  4096R/352C64E5 2013-12-16 Fedora EPEL (7) <epel@fedoraproject.org>
 
 The string after the / is what `rpmkey` expects (`352C64E5`).
 
-Running the tests
------------------
+## Running the tests
 
 The easiest way to run the tests is via bundler
 
@@ -65,11 +61,10 @@ bundle install
 bundle exec rake spec SPEC_OPTS='--format documentation'
 ```
 
-Contribution
-------------
+## Contribution
 
 Thanks to the following contributers, who made this module more usable:
 
-* Gene Liverman
-* Michael Moll
-* duritong
+- Gene Liverman
+- Michael Moll
+- duritong
